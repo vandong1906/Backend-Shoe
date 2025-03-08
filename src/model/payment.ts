@@ -2,7 +2,6 @@
 import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/db";
 import Order from "./order";
-
 interface PaymentAttributes {
     id: number;
     order_id: number;

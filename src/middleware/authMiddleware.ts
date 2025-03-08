@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 interface UserRequest extends Request {
     cookies: { [key: string]: string | undefined };
-    user?: { id: number; role: string }; // Type from cookie-parser
+    user?: { id: number; role: string };
 }
 const authMiddleware = (req: UserRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.token;

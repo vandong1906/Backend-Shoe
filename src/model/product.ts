@@ -3,12 +3,13 @@ import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/db";
 import Brand from "./brand";
 
-interface ProductAttributes {
+export  interface ProductAttributes {
     id: number;
     name: string;
     brand_id: number; // Foreign key to Brand
     description?: string;
     base_price: number;
+    stock:number;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -21,6 +22,7 @@ class Product extends Model<ProductAttributes, ProductCreationAttributes> implem
     public brand_id!: number;
     public description?: string;
     public base_price!: number;
+   public stock!:number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
@@ -49,6 +51,10 @@ Product.init(
             type: DataTypes.DECIMAL(10, 2),
             allowNull: false,
         },
+        stock:{
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        }
     },
     {
         sequelize,

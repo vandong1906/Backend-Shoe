@@ -1,7 +1,7 @@
 // controllers/productVariantController.ts
 import { Request, Response } from "express";
 import * as productVariantService from "../services/productVariantService";
-import { upload } from "../utils/upload";
+import { uploadConfigs } from "../utils/upload";
 
 interface VariantInput {
     product_id: number;
@@ -15,13 +15,8 @@ interface VariantInput {
 
 export const createVariant = async (req: Request, res: Response) => {
     try {
-        upload(req, res, async (err: any) => {
-            if (err) {
-                return res.status(400).json({ error: err.message });
-            }
-
             const { product_id, size, color, price, stock_quantity, sku } = req.body;
-            const image_url = req.file ? (req.file as any).path : ''; // Cloudinary URL
+            const image_url = req.file ? (req.file as any).path : '';
             const variantData: VariantInput = {
                 product_id: parseInt(product_id),
                 size,
@@ -31,10 +26,8 @@ export const createVariant = async (req: Request, res: Response) => {
                 sku,
                 image_url
             };
-
             const variant = await productVariantService.createVariant(variantData);
             res.status(201).json(variant);
-        });
     } catch (error: unknown) {
         if (error instanceof Error) {
             res.status(400).json({ error: error.message });
@@ -47,7 +40,8 @@ export const createVariant = async (req: Request, res: Response) => {
 export  const getVariant = async (req: Request, res: Response) => {
     try {
         const variantId = parseInt(req.params.id);
-        const product =productVariantService.getVariant(variantId);
+        const product = await productVariantService.getVariant(variantId);
+        console.log(product);
         res.json(product).status(200);
     } catch (error: unknown) {
     if (error instanceof Error) {

@@ -25,14 +25,16 @@ const uploadConfigs = {
         storage: createStorage("profile_pictures"),
         limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
     }).single("image"),
-
     gallery: multer({
         storage: createStorage("gallery_images"),
         limits: { fileSize: 5 * 1024 * 1024 },
     }).array("images", 10), // Allow up to 10 images
-
     upload: multer({
         storage: createStorage("uploads"),
+        limits: { fileSize: 5 * 1024 * 1024 },
+    }).single("image"),
+    product: multer({
+        storage: createStorage("products"),
         limits: { fileSize: 5 * 1024 * 1024 },
     }).single("image"),
 };

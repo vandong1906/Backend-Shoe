@@ -10,6 +10,7 @@ import brandRoutes from "./brandRoutes";
 import orderRoutes from "./orderRoutes";
 import orderItemRoutes from "./orderItemRoutes";
 import paymentRoutes from "./paymentRoutes";
+import inventoryRoutes from "./inventoryRoutes";
 
 const router = Router();
 
@@ -23,5 +24,7 @@ router.use("/orders", orderRoutes);
 router.use("/order-items", orderItemRoutes);
 router.use("/payments", paymentRoutes);
 router.use("/brands", brandRoutes);
+
+router.use("/inventory", inventoryRoutes);
 
 export default router;

@@ -8,6 +8,7 @@ import CartItem from "./cartItem";
 import Order from "./order";
 import OrderItem from "./orderItem";
 import Payment from "./payment";
+import Inventory from "./Inventory";
 
 // Define associations
 User.hasMany(Address, { foreignKey: "user_id", onDelete: "CASCADE" });
@@ -36,6 +37,8 @@ OrderItem.belongsTo(ProductVariant, { foreignKey: "variant_id" });
 
 Order.hasOne(Payment, { foreignKey: "order_id", onDelete: "CASCADE" });
 Payment.belongsTo(Order, { foreignKey: "order_id" });
+Product.hasOne(Inventory, { foreignKey: "product_id" });
+Inventory.belongsTo(Product, { foreignKey: "product_id" });
 
 export {
     User,
@@ -47,4 +50,5 @@ export {
     Order,
     OrderItem,
     Payment,
+    Inventory
 };

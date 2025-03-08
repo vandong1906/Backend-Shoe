@@ -25,8 +25,8 @@ class Address extends Model<AddressAttributes, AddressCreationAttributes> implem
      postal_code!: string;
      country!: string;
      is_default!: boolean;
-    public readonly  created_at!: Date;
-    public readonly  updated_at!: Date;
+    public readonly created_at!: Date;
+    public readonly updated_at!: Date;
 }
 Address.init(
     {

@@ -6,7 +6,7 @@ interface BrandAttributes {
     id: number;
     name: string;
     description?: string;
-    logo_url?: string; // URL to brand logo stored in Cloudinary
+    logo_url?: string; 
     createdAt?: Date;
     updatedAt?: Date;
 }

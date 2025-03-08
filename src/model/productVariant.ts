@@ -4,14 +4,14 @@ import sequelize from "../config/db";
 import Product from "./product";
 
 interface ProductVariantAttributes {
-    id: number;
-    product_id: number;
-    size: string;
-    color: string;
-    price: number;
-    stock_quantity: number;
-    sku: string;
-    image_url?: string; // URL to the image file
+        id: number;
+        product_id: number;
+        size: string;
+        color: string;
+        price: number;
+        stock_quantity: number;
+        sku: string;
+        image_url?: string; // URL to the image file
 }
 
 interface ProductVariantCreationAttributes extends Optional<ProductVariantAttributes, "id"> {}
