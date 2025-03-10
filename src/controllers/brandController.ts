@@ -53,6 +53,7 @@ export const getBrand = async (req: Request, res: Response) => {
 export const getAllBrands = async (req: Request, res: Response) => {
     try {
         const brands = await brandService.getAllBrands();
+        console.log(brands);
         res.json(brands);
     } catch (error: unknown) {
         if (error instanceof Error) {

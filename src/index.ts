@@ -13,12 +13,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
-const port = 3001;
+const port = 3000;
 dotenv.config({ path: './src/.env' });
 sequelize.sync();
 const server = createServer(app);
 // sequelize.sync({ force: true });
-initSocket(server);
+// initSocket(server);
 app.use(cors(
     {
         origin: 'http://localhost:5173',

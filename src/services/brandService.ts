@@ -21,5 +21,7 @@ export const getBrand = async (id: number) => {
 };
 
 export const getAllBrands = async () => {
-    return await Brand.findAll();
+    return await Brand.findAll({
+        raw: true,
+    });
 };
