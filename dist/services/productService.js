@@ -26,12 +26,13 @@ const getProduct = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const productData = yield product_1.default.findOne({
         where: { id },
-        include: productVariant_1.default // Sử dụng shorthand property
+        include: productVariant_1.default,
+        raw: true
     });
     if (!productData) {
         throw new Error("Product not found");
     }
-    return productData.get({ plain: true }); // Trả về dữ liệu thô
+    return productData; // Trả về dữ liệu thô
 });
 exports.getProduct = getProduct;
 const getAll = () => __awaiter(void 0, void 0, void 0, function* () {

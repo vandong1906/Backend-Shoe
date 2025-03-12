@@ -15,14 +15,14 @@ export const getProduct = async (id: number) => {
 
     const productData = await Product.findOne({
         where: { id },
-        include:ProductVariant// Sử dụng shorthand property
+        include:ProductVariant,
+        raw:true
     });
 
     if (!productData) {
         throw new Error("Product not found");
     }
-
-    return productData.get({ plain: true });// Trả về dữ liệu thô
+    return productData;// Trả về dữ liệu thô
 };
 
 export const getAll = async ()=>{

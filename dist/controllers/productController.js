@@ -51,7 +51,6 @@ const product_1 = __importDefault(require("../model/product"));
 const productVariant_1 = __importDefault(require("../model/productVariant"));
 const createProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(req.body);
         const product = yield productService.createProduct(req.body);
         res.status(201).json(product);
     }
@@ -69,7 +68,6 @@ const getProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const productId = parseInt(req.params.id);
         const product = yield productService.getProduct(productId);
-        console.log(product);
         res.json(product).status(200);
     }
     catch (error) {

@@ -15,7 +15,6 @@ const brandRoutes_1 = __importDefault(require("./brandRoutes"));
 const orderRoutes_1 = __importDefault(require("./orderRoutes"));
 const orderItemRoutes_1 = __importDefault(require("./orderItemRoutes"));
 const paymentRoutes_1 = __importDefault(require("./paymentRoutes"));
-const inventoryRoutes_1 = __importDefault(require("./inventoryRoutes"));
 const router = (0, express_1.Router)();
 router.use("/users", userRoutes_1.default);
 router.use("/addresses", addressRoutes_1.default); // Nested under users in some cases
@@ -27,6 +26,6 @@ router.use("/orders", orderRoutes_1.default);
 router.use("/order-items", orderItemRoutes_1.default);
 router.use("/payments", paymentRoutes_1.default);
 router.use("/brands", brandRoutes_1.default);
-router.use("/inventory", inventoryRoutes_1.default);
+// router.use("/inventory", inventoryRoutes);
 exports.default = router;
 //# sourceMappingURL=index.js.map

@@ -6,7 +6,7 @@ import ProductVariant from "../model/productVariant";
 
 export const createProduct = async (req: Request, res: Response) => {
     try {
-        console.log(req.body);
+
         const product = await productService.createProduct(req.body);
         res.status(201).json(product);
     } catch (error: unknown) {
@@ -17,12 +17,11 @@ export const createProduct = async (req: Request, res: Response) => {
         }
     }
 };
-
 export const getProduct = async (req: Request, res: Response) => {
     try {
         const productId = parseInt(req.params.id);
         const product = await productService.getProduct(productId);
-        console.log(product);
+
         res.json(product).status(200);
     } catch (error: unknown) {
         if (error instanceof Error) {
