@@ -16,12 +16,13 @@ app.use(cookieParser());
 const port = 3000;
 dotenv.config({ path: './src/.env' });
 sequelize.sync();
-const server = createServer(app);
+// const server = createServer(app);
 // sequelize.sync({ force: true });
 // initSocket(server);
+console.log(process.env.HOST_AllOW)
 app.use(cors(
     {
-        origin: 'http://localhost:5173',
+        origin: process.env.HOST_AllOW,
         allowedHeaders: ['sessionId', 'Content-Type', 'Authorization'],
         exposedHeaders: ['sessionId'],
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
