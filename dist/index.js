@@ -10,7 +10,6 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = __importDefault(require("./routes"));
 const cors_1 = __importDefault(require("cors"));
-const http_1 = require("http");
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
@@ -19,11 +18,12 @@ app.use((0, cookie_parser_1.default)());
 const port = 3000;
 dotenv_1.default.config({ path: './src/.env' });
 db_1.default.sync();
-const server = (0, http_1.createServer)(app);
+// const server = createServer(app);
 // sequelize.sync({ force: true });
 // initSocket(server);
+console.log(process.env.HOST_AllOW);
 app.use((0, cors_1.default)({
-    origin: 'http://localhost:5173',
+    origin: process.env.HOST_AllOW,
     allowedHeaders: ['sessionId', 'Content-Type', 'Authorization'],
     exposedHeaders: ['sessionId'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
