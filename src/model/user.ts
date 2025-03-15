@@ -17,7 +17,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
     public id!: number;
     public email!: string;
     public password!: string;
-    public role!: string;
+    public role!: "admin" | "user";
     public name!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -40,7 +40,7 @@ User.init(
             allowNull: false,
         },
         role: {
-            type: DataTypes.STRING,
+            type: DataTypes.ENUM("admin", "user"),
             allowNull: false,
             defaultValue: "user",
         },

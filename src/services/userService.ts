@@ -2,7 +2,7 @@ import User from "../model/user";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {checkemail} from "../utils/checkemail";
-import * as process from "node:process";
+
 const userService = {
     register: async (userData: { email: string; password: string; name?: string }) => {
         const flag =checkemail(userData.email);
@@ -26,10 +26,18 @@ const userService = {
         if (!user || !(await bcrypt.compare(credentials.password, user.password))) {
             throw new Error("Invalid credentials");
         }
-        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET || "", {
-            expiresIn: "1h",
-        });
-        return { token, user: { id: user.id, email: user.email, role: user.role, name: user.name } };
+        const accessToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET || "",
+            { expiresIn: "5m" } 
+        );
+    
+        const refreshToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_REFRESH_SECRET || "",
+            { expiresIn: "7d" } 
+        );
+        return { accessToken,refreshToken, user: { id: user.id, email: user.email, role: user.role, name: user.name } };
     },
 
     getProfile: async (userId: number) => {

@@ -1,24 +1,61 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
+
+
 interface UserRequest extends Request {
     cookies: { [key: string]: string | undefined };
-    user?: { id: number; role: string };
+    user?: UserPayload;
 }
+interface UserPayload {
+    id: number;
+    role: "admin" | "user";
+}
+// Main authentication middleware
 const authMiddleware = (req: UserRequest, res: Response, next: NextFunction) => {
     const token = req.cookies.token;
-    if (!token)
-       res.status(401).json({ error: "No token provided" });
-    else {
-    try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || "") as { id: number; role: string };
-        req.user = decoded;
-        next();
-    } catch (error) {
-        res.status(401).json({ error: "Invalid token" });
+
+    if (!token) {
+         res.status(401).json({ error: "No token provided" }); // Return to stop execution
     }
 
+    try {
+        const decoded = jwt.verify(token as string, process.env.JWT_SECRET || "") as UserPayload;
+        req.user = decoded;
+         next(); // Optional, but consistent with early s
+    } catch (error) {
+         res.status(401).json({ error: "Invalid token" }); // Return to stop execution
     }
 };
+// Refresh token handler
+const refreshToken = async (req: Request, res: Response) => {
+    const refreshToken = req.cookies.refreshToken;
+    
+    if (!refreshToken) {
+        res.status(401).json({ error: "No refresh token provided" });
+    }
 
-export default authMiddleware;
+    try {
+        // Verify refresh token
+        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET || "") as UserPayload;
+        
+        // Generate new access token
+        const accessToken = jwt.sign(
+            { id: decoded.id, role: decoded.role },
+            process.env.JWT_SECRET || "",
+            { expiresIn: "15m" } // Short-lived access token
+        );
+
+        // Set new access token in cookie
+        res.cookie("token", accessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            maxAge: 15 * 60 * 1000 
+        });
+
+        res.json({ message: "Token refreshed successfully" });
+    } catch (error) {
+        res.status(401).json({ error: "Invalid refresh token" });
+    }
+};
+export { authMiddleware, refreshToken};

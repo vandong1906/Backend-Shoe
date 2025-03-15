@@ -16,10 +16,6 @@ app.use(cookieParser());
 const port = 3000;
 dotenv.config({ path: './src/.env' });
 sequelize.sync();
-// const server = createServer(app);
-// sequelize.sync({ force: true });
-// initSocket(server);
-console.log(process.env.HOST_AllOW)
 app.use(cors(
     {
         origin: process.env.HOST_AllOW,

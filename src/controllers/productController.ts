@@ -4,9 +4,21 @@ import * as productService from "../services/productService";
 import product from "../model/product";
 import ProductVariant from "../model/productVariant";
 
-export const createProduct = async (req: Request, res: Response) => {
+interface request extends Request{
+    user?: {
+        id: number;
+        role: string;
+    };
+}
+export const createProduct = async (req: request, res: Response) => {
     try {
-
+        if (!req.user) {
+            res.status(401).json({ error: "Unauthorized" });
+        }
+        const role = req.user?.role;
+        if(role!='admin') {
+             res.status(401).json({ error: "Unauthorized" });
+        }
         const product = await productService.createProduct(req.body);
         res.status(201).json(product);
     } catch (error: unknown) {
