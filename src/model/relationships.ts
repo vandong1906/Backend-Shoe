@@ -9,7 +9,6 @@ import Order from "./order";
 import OrderItem from "./orderItem";
 import Payment from "./payment";
 import Inventory from "./Inventory";
-
 // Define associations
 User.hasMany(Address, { foreignKey: "user_id", onDelete: "CASCADE" });
 Address.belongsTo(User, { foreignKey: "user_id" });

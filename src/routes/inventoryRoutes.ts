@@ -5,7 +5,8 @@ import {
     getStockController,
     checkoutController,
 } from "../controllers/InventoryController";
-import authMiddleware from "../middleware/authMiddleware";
+
+import {authMiddleware} from "../middleware/authMiddleware";
 
 const router = Router();
 

@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt"
 import {checkemail} from "../utils/checkemail";
 
+
 const userService = {
     register: async (userData: { email: string; password: string; name?: string }) => {
         const flag =checkemail(userData.email);
@@ -57,6 +58,47 @@ const userService = {
         await user.update(updates);
         return user;
     },
+    googleLoginOrRegister: async (email: string, uid: string) => {
+        if (!email) {
+            throw new Error("Email is required");
+        }
+
+        // Kiểm tra xem user đã tồn tại với email này chưa
+        let user = await User.findOne({ where: { email } });
+
+        if (!user) {
+
+            user = await User.create({
+                email,
+                password: await bcrypt.hash(uid, 10),
+                name: email.split('@')[0],
+                role: "user",
+
+            });
+        }
+        const accessToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_SECRET || "",
+            { expiresIn: "5m" }
+        );
+
+        const refreshToken = jwt.sign(
+            { id: user.id, role: user.role },
+            process.env.JWT_REFRESH_SECRET || "",
+            { expiresIn: "7d" }
+        );
+
+        return {
+            accessToken,
+            refreshToken,
+            user: {
+                id: user.id,
+                email: user.email,
+                role: user.role,
+                name: user.name
+            }
+        };
+    }
 };
 
 export default userService;

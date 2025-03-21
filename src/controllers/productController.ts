@@ -9,15 +9,18 @@ interface request extends Request{
         id: number;
         role: string;
     };
+
 }
 export const createProduct = async (req: request, res: Response) => {
     try {
         if (!req.user) {
-            res.status(401).json({ error: "Unauthorized" });
+             res.status(401).json({ error: "Unauthorized" });
+             return;
         }
         const role = req.user?.role;
         if(role!='admin') {
              res.status(401).json({ error: "Unauthorized" });
+             return ;
         }
         const product = await productService.createProduct(req.body);
         res.status(201).json(product);
@@ -43,7 +46,6 @@ export const getProduct = async (req: Request, res: Response) => {
         }
     }
 };
-
 export const getProductsWithPagination = async (req:Request, res:Response) => {
     const page: number = Number(req.query.page) || 1;
     const size: number = Number(req.query.size) || 10;

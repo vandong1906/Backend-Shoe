@@ -1,6 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import {NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
-
 
 
 interface UserRequest extends Request {
@@ -13,21 +12,20 @@ interface UserPayload {
 }
 // Main authentication middleware
 const authMiddleware = (req: UserRequest, res: Response, next: NextFunction) => {
-    const token = req.cookies.token;
+        const token = req.cookies.token;
 
     if (!token) {
-         res.status(401).json({ error: "No token provided" }); // Return to stop execution
+         res.status(401).json({ error: "No token provided" });
     }
-
     try {
-        const decoded = jwt.verify(token as string, process.env.JWT_SECRET || "") as UserPayload;
-        req.user = decoded;
-         next(); // Optional, but consistent with early s
+        req.user = jwt.verify(token as string, process.env.JWT_SECRET || "") as UserPayload;
+
+        next();
     } catch (error) {
          res.status(401).json({ error: "Invalid token" }); // Return to stop execution
     }
 };
-// Refresh token handler
+
 const refreshToken = async (req: Request, res: Response) => {
     const refreshToken = req.cookies.refreshToken;
     

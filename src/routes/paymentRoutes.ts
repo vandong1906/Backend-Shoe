@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { vnp_Url, vnp_ReturnUrl, vnp_TmnCode, vnp_HashSecret } from '../config/vnpay-config';
 import { sortObject, createHash, formatDate } from '../utils/helpers';
 import { createPayment, updatePaymentStatus } from '../services/paymentService';
+import {checkOrder} from "../controllers/orderController";
+import {authMiddleware} from "../middleware/authMiddleware";
 
 const router = express.Router();
 
@@ -21,7 +23,7 @@ interface VnpParams {
     [key: string]: string | number;
 }
 
-router.post('/create-payment', async (req: Request, res: Response) => {
+router.post('/create-payment',authMiddleware,checkOrder, async (req: Request, res: Response) => {
     try {
         if (!vnp_TmnCode || !vnp_HashSecret) {
             res.status(500).json({ error: 'VNPay configuration is missing' });
@@ -32,14 +34,13 @@ router.post('/create-payment', async (req: Request, res: Response) => {
         }
 
             const { orderInfo, amount, orderId } = req.body;
-
+console.log(req.body);
         const payment = await createPayment({
             order_id: orderId,
             amount: parseInt(amount),
             payment_method: 'VNPay',
             transaction_id:orderInfo
         });
-
         const orderInfoFormatted = orderInfo.replace(/\s+/g, '+');
         const createDate = formatDate(new Date());
 
@@ -66,7 +67,7 @@ router.post('/create-payment', async (req: Request, res: Response) => {
         const secureHash = createHash(signData, vnp_HashSecret ??'');
         const paymentUrl = `${vnp_Url}?${signData}&vnp_SecureHash=${secureHash}`;
 
-        res.json({ paymentUrl }); // Luôn res.json()
+        res.json({ paymentUrl });
     } catch (error: any) {
         res.status(500).json({ error: error.message });
     }
@@ -114,6 +115,5 @@ router.get('/payment-result', async (req: Request, res: Response) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 
 export default router;

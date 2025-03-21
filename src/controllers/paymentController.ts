@@ -5,7 +5,7 @@ import * as paymentService from "../services/paymentService";
 export const createPayment = async (req: Request, res: Response) => {
     try {
         const payment = await paymentService.createPayment(req.body);
-        res.status(201).json(payment);
+        res.json(payment).status(200);
     } catch (error: unknown) {
         if (error instanceof Error) {
             res.status(400).json({ error: error.message });

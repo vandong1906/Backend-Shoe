@@ -5,7 +5,7 @@ import * as shoppingSessionService from "../services/shoppingSessionService";
 export const getOrCreateSession = async (req: Request, res: Response) => {
     try {
         const token = req.cookies.token || `session-${Date.now()}`;
-        const userId = req.body.user_id; // Optional, from auth
+        const userId = req.body.user_id;
         const session = await shoppingSessionService.getOrCreateSession(token, userId);
         if (!req.cookies.token) res.cookie("token", token, { httpOnly: true });
         res.json(session);
